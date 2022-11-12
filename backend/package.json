@@ -1,0 +1,20 @@
+{
+  "name": "nodejs-weather-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/majd-adawieh/nodejs-weather-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/majd-adawieh/nodejs-weather-api/issues"
+  },
+  "homepage": "https://github.com/majd-adawieh/nodejs-weather-api#readme"
+}
