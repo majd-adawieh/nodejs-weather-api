@@ -5,7 +5,7 @@ export class PostgreDB implements IDatabase {
   private client: Client;
 
   constructor(private readonly clientConfig: ClientConfig) {
-    this.client = new Client(clientConfig);
+    this.client = new Client(this.clientConfig);
   }
 
   public conenct() {
@@ -16,9 +16,10 @@ export class PostgreDB implements IDatabase {
     return this.client.end().then(() => true);
   }
 
-  public query() {
+  public query(queryString: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      return this.client.query("SELECT NOW()", (err, res) => {
+      return this.client.query(queryString, (err, res) => {
+        if (err) reject(err);
         return resolve(res);
       });
     });
