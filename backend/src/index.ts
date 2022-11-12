@@ -1,4 +1,7 @@
+import { client } from "./database/config";
+import { PostgreDB } from "./database/database";
 import { Server } from "./server";
 
-const server = Server.getInstance();
-server.start();
+const db = new PostgreDB(client);
+
+const server = Server.getInstance(db).start();
