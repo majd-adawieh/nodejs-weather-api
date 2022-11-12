@@ -1,15 +1,25 @@
 import express, { Express } from "express";
+import { WeatherController } from "./controllers/weather.controller";
+import { IController } from "./interfaces/controller";
 import { IDatabase } from "./interfaces/database";
+import { client } from "./database/config";
+import { PostgreDB } from "./database/database";
 
 export class Server {
   private static instance: Server;
   private server: Express;
 
-  private constructor(private readonly database?: IDatabase) {
+  private constructor(
+    private readonly controllers: IController[],
+    private readonly database: IDatabase
+  ) {
     this.server = express();
   }
 
   public start() {
+    this.controllers.forEach((controller) => {
+      this.server.use(controller.getController());
+    });
     this.server.listen(3000, async () => {
       console.log("Server is ready");
       if (this.database) {
@@ -23,9 +33,12 @@ export class Server {
     });
   }
 
-  public static getInstance(database?: IDatabase): Server {
+  public static bootstrap(): Server {
     if (!Server.instance) {
-      Server.instance = new Server(database);
+      Server.instance = new Server(
+        [new WeatherController()],
+        new PostgreDB(client)
+      );
     }
 
     return Server.instance;
