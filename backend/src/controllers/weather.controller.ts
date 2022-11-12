@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { IController } from "../interfaces/controller";
+import { WeatherService } from "../services/weather.service";
 
 export class WeatherController implements IController {
   private router: Router;
 
-  constructor() {
+  constructor(private weatherService: WeatherService) {
     this.router = Router();
   }
 
@@ -13,9 +14,12 @@ export class WeatherController implements IController {
     return this.router;
   }
 
-  public getWeather() {
-    this.router.get("/weather", (req, res, next) => {
-      return res.json("HALLO WORLD");
+  public async getWeather() {
+    this.router.get("/weather", async (req, res, next) => {
+      const lan = <string>req.query.lat;
+      const lon = <string>req.query.lon;
+      const result = await this.weatherService.getWeather(lan, lon);
+      return res.json(result);
     });
   }
 }

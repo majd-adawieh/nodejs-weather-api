@@ -4,6 +4,8 @@ import { IController } from "./interfaces/controller";
 import { IDatabase } from "./interfaces/database";
 import { client } from "./database/config";
 import { PostgreDB } from "./database/database";
+import { OpenWeatherMapService } from "./services/openweathermap.service";
+import { WeatherService } from "./services/weather.service";
 
 export class Server {
   private static instance: Server;
@@ -36,7 +38,11 @@ export class Server {
   public static bootstrap(): Server {
     if (!Server.instance) {
       Server.instance = new Server(
-        [new WeatherController()],
+        [
+          new WeatherController(
+            new WeatherService(new OpenWeatherMapService())
+          ),
+        ],
         new PostgreDB(client)
       );
     }
